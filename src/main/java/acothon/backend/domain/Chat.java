@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -26,7 +27,7 @@ public class Chat {
     private String answer;
 
     @Column
-    private LocalDateTime date;
+    private LocalDate date;
 
 //====================================//
 
