@@ -1,0 +1,50 @@
+name: Deploy to cloudtype
+
+on:
+  pull_request:
+    types:
+      - close
+    branches:
+      - dev
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Connect deploy key
+        uses: cloudtype-github-actions/connect@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          ghtoken: ${{ secrets.GHP_TOKEN }}
+      - name: Deploy
+        uses: cloudtype-github-actions/deploy@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          project: sungwoo/sungwoo
+          stage: main
+          yaml: |
+            name: navis-back
+            app: java@17
+            options:
+              ports: "8080"
+              env:
+                - name: DB_NAME
+                  value: ${{ secrets.DB_NAME }}
+                - name: DB_PASSWORD
+                  value: ${{ secrets.DB_PASSWORD }}
+                - name: DB_PORT
+                  value: ${{ secrets.DB_PORT }}
+                - name: DB_USERNAME
+                  value: ${{ secrets.DB_USERNAME }}
+                - name: DB_HOST
+                  value: ${{ secrets.DB_HOST }}
+                - name: DB_URL
+                  value: ${{ secrets.DB_URL }}
+                - name: DB_DATASOURCE
+                  value: ${{ secrets.DB_DATASOURCE }}
+              buildenv: []
+            context:
+              git:
+                url: git@github.com:${{ github.repository }}.git
+                ref: ${{ github.ref }}
