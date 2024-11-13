@@ -3,6 +3,7 @@ package acothon.backend.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -10,6 +11,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @Entity
 @RequiredArgsConstructor
 @Getter
+@Setter
 @DynamicUpdate
 @Table(name = "complete_tb")
 public class Complete {
