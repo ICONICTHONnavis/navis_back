@@ -20,4 +20,11 @@ public class SubjectController {
         return new ResponseDto<>(subjectService.completeSubject(userId));
     }
 
+    @GetMapping("/require/{userId}")
+    public ResponseDto<?> requireSubject(@PathVariable Long userId){
+        return new ResponseDto<>(subjectService.requireSubject(userId));
+    }
+
+
+
 }
