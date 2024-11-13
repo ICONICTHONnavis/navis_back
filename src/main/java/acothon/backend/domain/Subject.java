@@ -1,6 +1,7 @@
 package acothon.backend.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
@@ -48,5 +49,11 @@ public class Subject {
 
     @OneToMany(mappedBy = "subject", cascade = CascadeType.PERSIST)
     private List<Review> reviews; // 강의평
+
+
+    @Builder
+    public Subject(String subjectName){
+        this.name = subjectName;
+    }
 }
 
