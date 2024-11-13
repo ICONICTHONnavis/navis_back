@@ -11,12 +11,15 @@ import lombok.Getter;
 public class UserLoginResponseDto {
 
     private Long studentNumber; // 학번
-
     private String admission; // 입학년도
+    private String studentName;
+    private String major;
 
     public static UserLoginResponseDto of(User user) {
         return UserLoginResponseDto.builder()
                 .studentNumber(user.getStudentNumber())
+                .studentName(user.getStudentName())
+                .major(user.getMajor().getName())
                 .admission(user.getAdmission())
                 .build();
     }
