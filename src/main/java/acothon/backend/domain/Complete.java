@@ -11,7 +11,6 @@ import static jakarta.persistence.FetchType.LAZY;
 @Entity
 @RequiredArgsConstructor
 @Getter
-@Setter
 @DynamicUpdate
 @Table(name = "complete_tb")
 public class Complete {
@@ -37,5 +36,6 @@ public class Complete {
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
 
+    
 }
 
