@@ -22,13 +22,13 @@ public class Subject {
     @Column
     private String number; // 학수번호
     @Column
-    private Boolean is_major; // 전공 여부
-    @Column
     private String professor; // 교수 이름
     @Column
     private String semester; // 시행 학기
     @Column
     private String point; // 몇 학점 짜리 인지(추천용 정보)
+    @Column
+    private String target; // 몇 학점 짜리 인지(추천용 정보)
 
 //====================================================//
 
