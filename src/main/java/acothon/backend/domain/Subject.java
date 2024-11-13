@@ -27,6 +27,8 @@ public class Subject {
     private String professor; // 교수 이름
     @Column
     private String semester; // 시행 학기
+    @Column
+    private String point; // 몇 학점 짜리 인지(추천용 정보)
 
 //====================================================//
 

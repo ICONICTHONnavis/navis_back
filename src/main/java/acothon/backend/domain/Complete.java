@@ -1,6 +1,7 @@
 package acothon.backend.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,12 @@ public class Complete {
     private String semester;
     // 수강한 학기 (responseDTO에서 유효성 검사 부분에서 "24-1" 이런 형식으로 받도록 @Valid 구현하자
 
+    @Column
+    private String score;
+
+    @Column
+    private String point; // 몇 학점 짜리 인지 (정보 조회용)
+
     //====================================//
 
     @ManyToOne(fetch = LAZY)
@@ -37,5 +44,15 @@ public class Complete {
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
 
+    @Builder
+    public Complete(Long id, String grade, String semester, String score, User user, Subject subject, String point) {
+        this.id = id;
+        this.grade = grade;
+        this.semester = semester;
+        this.score = score;
+        this.user = user;
+        this.subject = subject;
+        this.point = point;
+    }
 }
 
