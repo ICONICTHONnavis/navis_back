@@ -1,8 +1,6 @@
 package acothon.backend.controller;
 
-import acothon.backend.dto.response.ChatListResponseDto;
 import acothon.backend.dto.response.ResponseDto;
-import acothon.backend.service.ChatService;
 import acothon.backend.service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
