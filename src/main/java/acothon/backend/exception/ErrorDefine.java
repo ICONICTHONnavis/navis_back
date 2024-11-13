@@ -18,7 +18,8 @@ public enum ErrorDefine {
     MAJOR_NOT_FOUND("4046", HttpStatus.NOT_FOUND, "Not Found: Major Not Found"),
     //Forbidden
     UNAUTHORIZED_USER("4030", HttpStatus.FORBIDDEN, "Forbidden: Unauthorized User"),
-
+    // 엑셀 파일 관련
+    FILE_NOT_FOUND("4044", HttpStatus.NOT_FOUND, "Not Found: Excel File Not Found"),
 
     // 소셜로그인 관련
     LOGIN_ACCESS_DENIED("4031", HttpStatus.FORBIDDEN, "Forbidden: Login Access Denied"),

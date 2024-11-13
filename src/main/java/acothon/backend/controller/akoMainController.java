@@ -5,6 +5,7 @@ import acothon.backend.dto.response.ResponseDto;
 import acothon.backend.service.CompleteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -15,7 +16,7 @@ public class akoMainController {
     private final CompleteService completeService;
 
     @PostMapping("/uploadEx")
-    public ResponseDto<String> uploadExcelFileSubject(@RequestBody ExcelFileRequestDto excelFileRequestDto) throws IOException {
-        return new ResponseDto<>(completeService.saveExcelToEntity(excelFileRequestDto));
+    public ResponseDto<String> uploadExcelFileSubject(@RequestParam("studentNumber") Long studentNumber, @RequestParam("file") MultipartFile file) throws IOException {
+        return new ResponseDto<>(completeService.saveExcelToEntity(studentNumber, file));
     }
 }

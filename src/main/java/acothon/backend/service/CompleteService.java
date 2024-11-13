@@ -4,6 +4,8 @@ package acothon.backend.service;
 import acothon.backend.domain.Complete;
 import acothon.backend.domain.User;
 import acothon.backend.dto.request.ExcelFileRequestDto;
+import acothon.backend.exception.ApiException;
+import acothon.backend.exception.ErrorDefine;
 import acothon.backend.repository.CompleteRepository;
 import acothon.backend.repository.SubjectRepository;
 import acothon.backend.repository.UserRepository;
@@ -13,7 +15,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,13 +30,14 @@ public class CompleteService {
     private final UserRepository userRepository;
     private final SubjectRepository subjectRepository;
 
-    public String saveExcelToEntity(ExcelFileRequestDto excelFileRequestDto) throws IOException {
+    public String saveExcelToEntity(Long studentNumber, MultipartFile file) {
 
-        MultipartFile file = excelFileRequestDto.file();
-        Long studentNumber = excelFileRequestDto.studentNumber();
-        User user = userRepository.findByStudentNumber(excelFileRequestDto.studentNumber())
-                .orElseThrow() ;//
+        if(file.isEmpty()) {
+            throw new ApiException(ErrorDefine.FILE_NOT_FOUND);
+        }
 
+        User user = userRepository.findByStudentNumber(studentNumber)
+                .orElseThrow(()-> new ApiException(ErrorDefine.USER_NOT_FOUND));
 
         List<Complete> completes = new ArrayList<>();
         try (Workbook workbook = new XSSFWorkbook(file.getInputStream())){
@@ -48,6 +50,7 @@ public class CompleteService {
                 String grade = "";
                 StringBuilder semester = new StringBuilder();
                 String subjectName = "";
+                String point = "";
 
                 for (Cell cell : row) {
                     switch (cell.getColumnIndex()) {
@@ -56,6 +59,7 @@ public class CompleteService {
                             semester = new StringBuilder(cell.toString());
                             break;
                         case 3:
+                            // 들은 연도 + 이수 학기 (1, 2, 계절)
                             if(cell.toString().equals("1학기")) {
                                 semester.append("-1"); //2024-1
                             }
@@ -69,18 +73,56 @@ public class CompleteService {
                         case 6:
                             subjectName = cell.toString();
                             break;
+                        case 10:
+                            point = cell.toString();
                         case 11:
                             grade = cell.toString();
+                            if(grade.equals("A+")){
+                                grade="4.5";
+                            }
+                            else if(grade.equals("A0")) {
+                                grade="4.0";
+                            }
+                            else if(grade.equals("B+")) {
+                                grade="3.5";
+                            }
+                            else if(grade.equals("B0")) {
+                                grade="3.0";
+                            }
+                            else if(grade.equals("C+")) {
+                                grade="2.5";
+                            }
+                            else if(grade.equals("C0")) {
+                                grade="2.0";
+                            }
+                            else if(grade.equals("D+")) {
+                                grade="1.5";
+                            }
+                            else if(grade.equals("D0")) {
+                                grade="1.0";
+                            }
+                            else if(grade.equals("P")) {
+                                grade="4.5";
+                            }
+                            else if(grade.equals("F")) {
+                                grade="0.0";
+                            }
                             break;
 
 
                     }
                 }
-                Complete complete = new Complete();
-                complete(user, semester, grade , subjectRepository.findby(subjectName));
+                Complete complete = Complete.builder()
+                        .grade(grade)
+                        .point(point)
+                        .subject(subjectRepository.findByName(subjectName).get())
+                        .user(user)
+                        .semester(semester.toString()).build();
                 completes.add(complete);
             }
 
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         for (Complete complete : completes) {
