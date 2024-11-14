@@ -2,18 +2,18 @@ package acothon.backend.service;
 
 import acothon.backend.domain.Complete;
 import acothon.backend.domain.GraduateRequirement;
+import acothon.backend.domain.GraduateSubject;
 import acothon.backend.domain.User;
 import acothon.backend.exception.ApiException;
 import acothon.backend.exception.ErrorDefine;
 import acothon.backend.repository.CompleteRepository;
 import acothon.backend.repository.GraduateRequirementRepository;
+import acothon.backend.repository.GraduateSubjectRepository;
 import acothon.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -24,6 +24,7 @@ public class SubjectService {
     private final CompleteRepository completeRepository;
     private final UserRepository userRepository;
     private final GraduateRequirementRepository graduateRequirementRepository;
+    private final GraduateSubjectRepository graduateSubjectRepository;
 
 
     public Map<String, Object> completeSubject(Long userId){
@@ -63,4 +64,32 @@ public class SubjectService {
         return result;
 
     }
+
+    public List<Map<String, Object>> requireSubject(Long userId) {
+        User user = userRepository.findByStudentNumber(userId)
+                .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
+
+        List<Complete> completes = completeRepository.findByUser(user);
+        List<GraduateSubject> graduateSubjects = graduateSubjectRepository.findByGrade(user.getAdmission());
+
+        List<String> completedSubjectList = completes.stream()
+                .map(complete -> complete.getSubject().getName())
+                .toList();
+
+        List<Map<String, Object>> subjectList = new ArrayList<>();
+
+        for (GraduateSubject graduateSubject : graduateSubjects) {
+            Map<String, Object> subjectInfo = new HashMap<>();
+
+            subjectInfo.put("subjectName", graduateSubject.getRequiredSubjectName());
+            subjectInfo.put("isMajor", graduateSubject.getIsMajor());
+            subjectInfo.put("isCompleted", completedSubjectList.contains(graduateSubject.getRequiredSubjectName()));
+
+            subjectList.add(subjectInfo);
+        }
+
+        return subjectList;
+    }
+
+
 }

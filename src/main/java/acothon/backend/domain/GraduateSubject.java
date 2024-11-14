@@ -24,5 +24,7 @@ public class GraduateSubject {
     @Column
     private String requiredSubjectName; // 졸업 필수 과목
 
+    @Column
+    private Boolean isMajor;
     // Getters and Setters
 }
