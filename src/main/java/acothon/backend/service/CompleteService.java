@@ -3,12 +3,14 @@ package acothon.backend.service;
 
 import acothon.backend.domain.Complete;
 import acothon.backend.domain.Subject;
+import acothon.backend.domain.SubjectType;
 import acothon.backend.domain.User;
 import acothon.backend.dto.request.ExcelFileRequestDto;
 import acothon.backend.exception.ApiException;
 import acothon.backend.exception.ErrorDefine;
 import acothon.backend.repository.CompleteRepository;
 import acothon.backend.repository.SubjectRepository;
+import acothon.backend.repository.SubjectTypeRepository;
 import acothon.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
@@ -30,6 +32,7 @@ public class CompleteService {
     private final CompleteRepository completeRepository;
     private final UserRepository userRepository;
     private final SubjectRepository subjectRepository;
+    private final SubjectTypeRepository subjectTypeRepository;
 
     public String saveExcelToEntity(Long studentNumber, MultipartFile file) {
 
@@ -51,7 +54,10 @@ public class CompleteService {
                 String grade = "";
                 StringBuilder semester = new StringBuilder();
                 String subjectName = "";
+                String number = "";
+                String professor= "";
                 String point = "";
+                String subjectTypeName="";
 
                 for (Cell cell : row) {
                     switch (cell.getColumnIndex()) {
@@ -69,11 +75,16 @@ public class CompleteService {
                                 semester = new StringBuilder("계절");
                             }
                             break;
+                        case 4:
+                            number = cell.toString(); // 학수번호
                         case 6:
-                            subjectName = cell.toString();
+                            subjectName = cell.toString(); // 과목명
                             break;
+                        case 9:
+                            professor = cell.toString(); // 교수
                         case 10:
                             point = cell.toString();
+                            point = point.split("\\.")[0];
                         case 11:
                             grade = cell.toString();
                             if (grade.equals("A+")) {
@@ -98,17 +109,41 @@ public class CompleteService {
                                 grade = "0.0";
                             }
                             break;
-
+                        case 14:
+                            if(cell.toString().isEmpty())
+                                subjectTypeName = "common";
+                            else if (cell.toString().equals("전공"))
+                                subjectTypeName = "major";
+                            else if (cell.toString().equals("MSC/BSM"))
+                                subjectTypeName = "msc";
+                            else if (cell.toString().equals("MSC/BSM"))
+                                subjectTypeName = "msc";
+                            else if (cell.toString().equals("전문교양")) {
+                                if(subjectName.equals("이산구조"))
+                                    subjectTypeName="major";
+                                else
+                                    subjectTypeName="general";
+                            }
+                            break;
 
                     }
                 }
+
+                SubjectType subjectType = subjectTypeRepository.findSubjectTypeByName(subjectTypeName)
+                        .orElseThrow(() -> new ApiException(ErrorDefine.SUBJECTTYPE_NAME_NOT_FOUND));
 
                 List<Subject> subjects = subjectRepository.findByName(subjectName);
                 Subject subject;
                 if (subjects.isEmpty()) {
                     // 새로운 Subject 객체 생성
                     subject = Subject.builder()
-                            .subjectName(subjectName).build();
+                            .subjectName(subjectName)
+                            .professor(professor)
+                            .number(number)
+                            .point(point)
+                            .semester(semester.toString())
+                            .subjectType(subjectType)
+                            .build();
                     subject = subjectRepository.save(subject);
                 } else {
                     // 첫 번째 Subject 가져오기

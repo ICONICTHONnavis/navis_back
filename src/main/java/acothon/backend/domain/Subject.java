@@ -52,8 +52,13 @@ public class Subject {
 
 
     @Builder
-    public Subject(String subjectName){
+    public Subject(String subjectName, String number, String professor, String semester, String point, SubjectType subjectType){
         this.name = subjectName;
+        this.number = number;
+        this.professor = professor;
+        this.semester = semester;
+        this.point = point;
+        this.subjectType = subjectType;
     }
 }
 

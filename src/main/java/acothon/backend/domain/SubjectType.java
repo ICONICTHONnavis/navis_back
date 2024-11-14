@@ -1,6 +1,7 @@
 package acothon.backend.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
@@ -18,5 +19,6 @@ public class SubjectType {
 
     @Column
     private String name; // 전공, 학문 기초, MSC ...
+
 
 }

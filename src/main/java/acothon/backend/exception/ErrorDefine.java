@@ -20,6 +20,7 @@ public enum ErrorDefine {
     UNAUTHORIZED_USER("4030", HttpStatus.FORBIDDEN, "Forbidden: Unauthorized User"),
     // 엑셀 파일 관련
     FILE_NOT_FOUND("4044", HttpStatus.NOT_FOUND, "Not Found: Excel File Not Found"),
+    SUBJECTTYPE_NAME_NOT_FOUND("4045", HttpStatus.NOT_FOUND, "Not Found: SubjectType Not Found"),
 
     // 소셜로그인 관련
     LOGIN_ACCESS_DENIED("4031", HttpStatus.FORBIDDEN, "Forbidden: Login Access Denied"),
