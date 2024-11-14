@@ -28,10 +28,13 @@ public class SubjectService {
 
 
     public Map<String, Object> completeSubject(Long userId){
+
         User user = userRepository.findByStudentNumber(userId)
                 .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
 
-        List<Complete> completes = completeRepository.findByUser(user);
+        List<Complete> completes = completeRepository.findByUser(user)
+                .orElseThrow(() -> new ApiException(ErrorDefine.NO_COMPLETES_FOUND));
+
         List<GraduateRequirement> graduateRequirements = graduateRequirementRepository.findByEnrollmentYear(Long.valueOf(user.getAdmission()));
 
         Map<String, Long> completedCredits = completes.stream()
@@ -69,7 +72,9 @@ public class SubjectService {
         User user = userRepository.findByStudentNumber(userId)
                 .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
 
-        List<Complete> completes = completeRepository.findByUser(user);
+        List<Complete> completes = completeRepository.findByUser(user)
+                .orElseThrow(() -> new ApiException(ErrorDefine.NO_COMPLETES_FOUND));
+
         List<GraduateSubject> graduateSubjects = graduateSubjectRepository.findByGrade(user.getAdmission());
 
         List<String> completedSubjectList = completes.stream()
