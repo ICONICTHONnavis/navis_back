@@ -16,6 +16,7 @@ public enum ErrorDefine {
     USER_NOT_FOUND("4040", HttpStatus.NOT_FOUND, "Not Found: User Not Found"),
     MESSAGE_NOT_FOUND("4046", HttpStatus.NOT_FOUND, "Not Found: Message Not Found"),
     MAJOR_NOT_FOUND("4046", HttpStatus.NOT_FOUND, "Not Found: Major Not Found"),
+    NO_COMPLETES_FOUND("4047", HttpStatus.NOT_FOUND, "Not Found: Complete Not Found"),
     //Forbidden
     UNAUTHORIZED_USER("4030", HttpStatus.FORBIDDEN, "Forbidden: Unauthorized User"),
     // 엑셀 파일 관련
