@@ -5,7 +5,6 @@ import acothon.backend.domain.Complete;
 import acothon.backend.domain.Subject;
 import acothon.backend.domain.SubjectType;
 import acothon.backend.domain.User;
-import acothon.backend.dto.request.ExcelFileRequestDto;
 import acothon.backend.exception.ApiException;
 import acothon.backend.exception.ErrorDefine;
 import acothon.backend.repository.CompleteRepository;
@@ -114,18 +113,16 @@ public class CompleteService {
                             break;
                         case 14:
                             if(cell.toString().isEmpty())
-                                subjectTypeName = "common";
+                                subjectTypeName = "general";
                             else if (cell.toString().equals("전공"))
                                 subjectTypeName = "major";
                             else if (cell.toString().equals("MSC/BSM"))
-                                subjectTypeName = "msc";
-                            else if (cell.toString().equals("MSC/BSM"))
-                                subjectTypeName = "msc";
+                                subjectTypeName = "common";
                             else if (cell.toString().equals("전문교양")) {
                                 if(subjectName.equals("이산구조"))
                                     subjectTypeName="major";
                                 else
-                                    subjectTypeName="general";
+                                    subjectTypeName="common";
                             }
                             break;
 
