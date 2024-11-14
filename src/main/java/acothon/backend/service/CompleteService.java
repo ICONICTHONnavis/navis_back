@@ -77,14 +77,17 @@ public class CompleteService {
                             break;
                         case 4:
                             number = cell.toString(); // 학수번호
+                            break;
                         case 6:
                             subjectName = cell.toString(); // 과목명
                             break;
                         case 9:
                             professor = cell.toString(); // 교수
+                            break;
                         case 10:
                             point = cell.toString();
-                            point = point.split("\\.")[0];
+                            point = String.valueOf(point.charAt(0));
+                            break;
                         case 11:
                             grade = cell.toString();
                             if (grade.equals("A+")) {
