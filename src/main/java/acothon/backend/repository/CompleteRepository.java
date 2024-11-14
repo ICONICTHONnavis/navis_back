@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface CompleteRepository extends JpaRepository<Complete,Long> {
 
-    Optional<List<Complete>> findByUser(User user);
+    List<Complete> findByUser(User user);
+    Optional<Complete> findByUserId(Long userId);
 
 }
