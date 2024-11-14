@@ -32,8 +32,10 @@ public class SubjectService {
         User user = userRepository.findByStudentNumber(userId)
                 .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
 
-        List<Complete> completes = completeRepository.findByUser(user)
+        completeRepository.findByUserId(user.getId())
                 .orElseThrow(() -> new ApiException(ErrorDefine.NO_COMPLETES_FOUND));
+
+        List<Complete> completes = completeRepository.findByUser(user);
 
         List<GraduateRequirement> graduateRequirements = graduateRequirementRepository.findByEnrollmentYear(Long.valueOf(user.getAdmission()));
 
@@ -72,8 +74,7 @@ public class SubjectService {
         User user = userRepository.findByStudentNumber(userId)
                 .orElseThrow(() -> new ApiException(ErrorDefine.USER_NOT_FOUND));
 
-        List<Complete> completes = completeRepository.findByUser(user)
-                .orElseThrow(() -> new ApiException(ErrorDefine.NO_COMPLETES_FOUND));
+        List<Complete> completes = completeRepository.findByUser(user);
 
         List<GraduateSubject> graduateSubjects = graduateSubjectRepository.findByGrade(user.getAdmission());
 
