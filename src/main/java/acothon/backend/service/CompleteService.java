@@ -111,19 +111,20 @@ public class CompleteService {
                                 grade = "0.0";
                             }
                             break;
-                        case 14:
+                        case 15:
                             if(cell.toString().isEmpty())
-                                subjectTypeName = "general";
-                            else if (cell.toString().equals("전공"))
+                                subjectTypeName = "extra";
+                            else if (cell.toString().contains("전공"))
                                 subjectTypeName = "major";
-                            else if (cell.toString().equals("MSC/BSM"))
+                            else if (cell.toString().equals("기초교양(교필)"))
                                 subjectTypeName = "common";
-                            else if (cell.toString().equals("전문교양")) {
-                                if(subjectName.equals("이산구조"))
-                                    subjectTypeName="major";
-                                else
-                                    subjectTypeName="common";
-                            }
+                            else if (cell.toString().equals("수학"))
+                                subjectTypeName = "general";
+                            else if(cell.toString().equals("기초과학"))
+                                subjectTypeName = "general";
+                            else if(cell.toString().equals("기본소양"))
+                                subjectTypeName = "general";
+
                             break;
 
                     }
